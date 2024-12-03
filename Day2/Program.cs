@@ -9,6 +9,26 @@ namespace Day2
 {
     internal class Program
     {
+        static public bool ellenorzes(int szam, bool negativ)
+        {
+            bool nemjo = false;
+            if (!(Math.Abs(szam) > 3 || szam == 0))
+            {
+                if (!(szam < 0 == negativ))
+                {
+                    nemjo = true; 
+                }
+            }
+            else
+            {
+                nemjo = true;
+            }
+
+            return nemjo;
+        }
+        
+        
+        
         static void Main(string[] args)
         {
             string[] temp = File.ReadAllLines("adat.txt");
@@ -21,46 +41,102 @@ namespace Day2
                 {
                     Console.Write(alma + " ");
                 }
-                List<int> kimenet = new List<int>();
-                for (int i = 0; i < sor.Length-1; i++)
-                {
-                    kimenet.Add(sor[i] - sor[i + 1]);
-                }
+                Console.WriteLine();
                 bool negativ = true;
-                if (kimenet[0] > 0)
+                if (sor[0] - sor[1] > 0)
                 {
                     negativ = false;
                 }
-                
-                foreach (var item1 in kimenet)
+                List<int> szam = new List<int>();
+                foreach (var alma in sor)
                 {
-
-                    if(!(Math.Abs(item1) > 3 || item1 == 0))
-                    {
-                        if (!(item1 < 0 == negativ))
-                        {
-                            nemjo = true;
-                        }
-                    }
-                    else
+                    szam.Add(alma);
+                }
+                for (int i = 0; i < szam.Count - 1; i++)
+                {
+                    int kulombseg = szam[i] - szam[i + 1];
+                    if (ellenorzes(kulombseg, negativ))
                     {
                         nemjo = true;
                     }
-
-                    Console.Write(item1 + " ");
+                    Console.Write(kulombseg + " ");
                 }
+                Console.WriteLine();
+
+                bool btervsiker = false;
+                if (nemjo)
+                {
+                    bool nemjo2 = false;
+                    Console.WriteLine("B-terv");
+                    for (int i = 0; i < szam.Count; i++)
+                    {
+                        int kivesz = szam[i];
+                        szam.RemoveAt(i);
+
+                        foreach (var eper in szam)
+                        {
+                            Console.Write(eper + " ");
+                        }
+                        Console.WriteLine();
+
+                        negativ = true;
+                        if (szam[0] - szam[1] > 0)
+                        {
+                            negativ = false;
+                        }
+
+                        for (int a = 0; a < szam.Count - 1; a++)
+                        {
+                            int kulombseg = szam[a] - szam[a+1];
+                            if (ellenorzes(kulombseg, negativ))
+                            {
+                                nemjo2 = true;
+                            }
+                            Console.Write(kulombseg + " ");
+                        }
+
+                        Console.WriteLine();
+                        if (nemjo2)
+                        {
+                            Console.WriteLine("szar");
+                        }
+                        else
+                        {
+                            Console.WriteLine("jó");
+                            btervsiker = true;
+                        }
+                        nemjo2 = false;
+                        szam.Insert(i, kivesz);
+                    }
+
+                }
+
                 Console.WriteLine();
                 if (nemjo)
                 {
                     Console.WriteLine("szar");
+                    Console.WriteLine();
+                    Console.WriteLine();
+                    
                 }
                 else
                 {
-                    Console.WriteLine("jó");
+                    Console.WriteLine("jó a szám");
+                    Console.WriteLine();
+                    Console.WriteLine();
                     sum = sum + 1;
                 }
+                if (btervsiker)
+                {
+                    sum = sum + 1;
+                    Console.WriteLine("amugy jó");
+                }
+                
+                
+                
             }
             Console.WriteLine(sum);
+            
             Console.Read();
         }
     }
