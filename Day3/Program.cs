@@ -13,17 +13,12 @@ namespace Day3
         static void Main(string[] args)
         {
             long sum = 0;
-            string[] temp = File.ReadAllLines("adat.txt");
+            string temp = File.ReadAllText("adat.txt");
             //string pattern = @"mul\(\d{1,3},\d{1,3}\)";
             string pattern = @"(mul\(\d{1,3},\d{1,3}\))|(don't\(\)|do\(\))";
             Regex regex = new Regex(pattern);
-            string all = "";
-            foreach (var item in temp)
-            {
-                all = all + item;
-            }
-            
-            MatchCollection minden = regex.Matches(all);
+            MatchCollection minden = regex.Matches(temp);
+            Console.WriteLine(minden.Count);
             bool dont = false;
             foreach (var alma in minden)
             {
